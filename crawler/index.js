@@ -31,9 +31,21 @@ async function getPaste(link) {
 
       const text = $(".text").text().replaceAll("\t", "");
 
-      const author = $(".pre-info.pre-footer").find(".col-sm-6").text();
+      const footerTextSplitted = $(".pre-info.pre-footer")
+        .text()
+        .replaceAll("\t", "")
+        .replaceAll("\n", "")
+        .split(" ");
 
-      const pasteObj = { link, title, text };
+      const author = footerTextSplitted[2];
+
+      const date = new Date(
+        `${footerTextSplitted[4]} ${footerTextSplitted[5]} ${footerTextSplitted[6]} ${footerTextSplitted[7]} UTC`
+      );
+
+      const views = footerTextSplitted[footerTextSplitted.length - 1];
+
+      const pasteObj = { link, title, text, author, date, views };
       resolve(pasteObj);
     });
   });
