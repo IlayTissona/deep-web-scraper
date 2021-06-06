@@ -1,20 +1,43 @@
 const cheerio = require("cheerio");
 const tr = require("tor-request");
-const app = require("express")();
 
-app.get("/all-links", async (req, res) => {
+async function main() {
   const allLinks = await getAllLinks();
-  res.json(allLinks);
-});
+  const paste = await getPaste(allLinks[0]);
+  console.log(paste);
 
-app.get("/all-links", async (req, res) => {
-  const allLinks = await getAllLinks();
-  res.json(allLinks);
-});
-
-app.listen(8080, () => console.log("listening on 80"));
-
+  //   allLinks.forEach(async (link) => {
+  //     const paste = await getPaste(link);
+  //     console.log(paste);
+  //   });
+}
+main();
 //------------------------------------------------------functions------------------------------------------------------
+
+async function getPaste(link) {
+  return new Promise((resolve, reject) => {
+    tr.request(link, function (err, res, body) {
+      if (err || res.statusCode !== 200) {
+        reject("unavailable");
+        return;
+      }
+      const $ = cheerio.load(body);
+
+      const title = $(".pre-info.pre-header")
+        .find("h4")
+        .text()
+        .replaceAll("\t", "")
+        .replaceAll("\n", "");
+
+      const text = $(".text").text().replaceAll("\t", "");
+
+      const author = $(".pre-info.pre-footer").find(".col-sm-6").text();
+
+      const pasteObj = { link, title, text };
+      resolve(pasteObj);
+    });
+  });
+}
 
 async function getAllLinks() {
   const allLinks = [];
@@ -25,8 +48,7 @@ async function getAllLinks() {
       const pageLinks = await searchPage(i);
       allLinks.push(...pageLinks);
     } catch (e) {
-      console.log(e);
-      nextPage = false;
+      e === "last-page" ? (nextPage = false) : console.log(e);
     }
   }
 
@@ -39,8 +61,7 @@ async function searchPage(page) {
       `http://nzxj65x32vh2fkhk.onion/all?page=${page}`,
       function (err, res, body) {
         if (err || res.statusCode !== 200) {
-          console.log("EERRRROORR");
-          reject("LAST PAGEEEEEEEEEEEEEEEEEE");
+          reject("last-page");
           return;
         }
         const $ = cheerio.load(body);
