@@ -1,0 +1,40 @@
+thead {
+  width: 98vw;
+  display: grid;
+  grid-template-columns: 15% 15% 25% 40% 5%;
+  text-align: center;
+  position: fixed;
+  top: 14vh;
+  th {
+    height: 5vh;
+    line-height: 5vh;
+    font-size: 1.2rem;
+    border: 1px solid black;
+  }
+}
+tbody {
+  width: 100vw;
+  height: 70vh;
+  position: fixed;
+  overflow-y: scroll;
+  bottom: 10vh;
+  top: 20vh;
+  tr {
+    height: 8vh;
+    width: 98vw;
+    display: grid;
+    grid-template-columns: 15% 15% 25% 40% 5%;
+    text-align: center;
+    td {
+      border: 1px solid black;
+    }
+  }
+}
+.post-content {
+  overflow: hidden;
+  height: inherit;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* number of lines to show */
+  -webkit-box-orient: vertical;
+}

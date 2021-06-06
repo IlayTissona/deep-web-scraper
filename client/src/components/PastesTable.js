@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Loader from "./Loader";
 import axios from "axios";
+import "../styles/PastesTable.css";
 
 axios.defaults = {
   proxy: {
@@ -42,7 +43,7 @@ function PastesTable() {
 function makeRow(post, index) {
   return (
     <tr key={index}>
-      <td className="post-date">{post.date}</td>
+      <td className="post-date">{new Date(post.date).toDateString()}</td>
       <td className="post-author">{post.author}</td>
       <td className="post-title">{post.title}</td>
       <td className="post-content">{post.text}</td>
