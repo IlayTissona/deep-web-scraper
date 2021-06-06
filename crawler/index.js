@@ -2,6 +2,7 @@ const cheerio = require("cheerio");
 const tr = require("tor-request");
 
 async function main() {
+  console.log("running");
   const allLinks = await getAllLinks();
 
   allLinks.forEach(async (link) => {
@@ -32,16 +33,12 @@ async function getPaste(link) {
       const footerTextSplitted = $(".pre-info.pre-footer")
         .text()
         .replaceAll("\t", "")
-        .replaceAll("\n", "")
-        .split(" ");
+        .replaceAll("\n", "") // "Posted by Anonymous at 06 Jun 2021, 09:37:46 UTCLanguage: text • Views: 93"
+        .split(" "); //[ "Posted", "by", "Anonymous", "at", "06", "Jun", "2021,", "09:37:46", "UTCLanguage:", "text", "•", "Views:", "93" ]
 
-      const author = footerTextSplitted[2];
-
-      const date = new Date(
-        `${footerTextSplitted[4]} ${footerTextSplitted[5]} ${footerTextSplitted[6]} ${footerTextSplitted[7]} UTC`
-      );
-
-      const views = footerTextSplitted[footerTextSplitted.length - 1];
+      const author = footerTextSplitted[2]; // "Anonymous"
+      const date = new Date(footerTextSplitted.slice(4, 8).join(" ") + " UTC"); //06 Jun 2021, 09:37:46 UTC
+      const views = footerTextSplitted[footerTextSplitted.length - 1]; //"93"
 
       const pasteObj = { link, title, text, author, date, views };
       resolve(pasteObj);
