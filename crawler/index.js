@@ -4,8 +4,7 @@ const db = require("./mySQL.js");
 
 tr.setTorAddress("torproxy");
 
-main();
-setInterval(main, 60000 * 1); //1 minutes
+setInterval(main, 60000 * 2); //2 minutes
 
 async function main() {
   console.log("running");
