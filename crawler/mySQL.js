@@ -1,15 +1,19 @@
-const mysql = require("mysql2");
+try {
+  const mysql = require("mysql2");
 
-// create the connection to database
-const connection = mysql.createConnection({
-  host: "127.0.0.1",
-  port: 5555,
-  user: "root",
-  database: "scraper",
-  password: "123456789",
-});
+  // create the connection to database
+  const connection = mysql.createConnection({
+    host: "http://mySQL",
+    port: 5555,
+    user: "root",
+    database: "scraper",
+    password: "123456789",
+  });
 
-module.exports = connection;
+  module.exports = connection;
+} catch (e) {
+  console.log(e);
+}
 // connection.query("SELECT * FROM `pastes`", function (err, results, fields) {
 //   console.log(results); // results contains rows returned by server
 //   console.log(fields); // fields contains extra meta data about results, if available

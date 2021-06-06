@@ -1,15 +1,26 @@
 const cheerio = require("cheerio");
 const tr = require("tor-request");
+const db = require("./mySQL.js");
 
 async function main() {
   console.log("running");
   const allLinks = await getAllLinks();
+  const existingLinks = await getExistingLinks();
 
-  allLinks.forEach(async (link) => {
-    const paste = await getPaste(link);
-    console.log(paste);
+  const newLinks = allLinks.filter((link) => !existingLinks.includes(link));
+
+  newLinks.forEach(async (pasteLink) => {
+    const { link, title, text, author, date, views } = await getPaste(
+      pasteLink
+    );
+    db.query(
+      "INSERT INTO `scraper`.`pastes` (`link`, `title`, `text`, `author`, `date`, `views`) VALUES (?, ?, ?, ?, ?, ?);",
+      [link, title, text, author, date, views]
+    );
+    console.log(link, title, text, author, date, views);
   });
 }
+setInterval(main, 60000 * 1); //1 minutes
 main();
 //------------------------------------------------------functions------------------------------------------------------
 
@@ -42,6 +53,16 @@ async function getPaste(link) {
 
       const pasteObj = { link, title, text, author, date, views };
       resolve(pasteObj);
+    });
+  });
+}
+
+async function getExistingLinks() {
+  return new Promise((resolve, reject) => {
+    db.query("SELECT `link` FROM `scraper`.`pastes`", (err, result) => {
+      if (err) reject(err);
+      const links = result.map((obj) => obj.link);
+      resolve(links);
     });
   });
 }
