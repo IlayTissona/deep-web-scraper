@@ -23,12 +23,15 @@ services:
     networks:
       - scraper
 
-  # server:
-  #   image: crawler:latest
-  #   networks:
-  #     - scraper
-  #   depends_on:
-  #     - mySQL
+  server:
+    image: server:latest
+    networks:
+      - scraper
+      - default
+    depends_on:
+      - mySQL
+    ports:
+      - "3000:80"
 
 networks:
   scraper:

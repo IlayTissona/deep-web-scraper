@@ -7,12 +7,8 @@ tr.setTorAddress("torproxy");
 setInterval(main, 60000 * 2); //2 minutes
 
 async function main() {
-  console.log("running");
   const allLinks = await getAllLinks();
   const existingLinks = await getExistingLinks();
-  console.log(existingLinks);
-  console.log(allLinks);
-
   const newLinks = allLinks.filter((link) => !existingLinks.includes(link));
 
   newLinks.forEach(async (pasteLink) => {
@@ -23,7 +19,6 @@ async function main() {
       "INSERT INTO `scraper`.`pastes` (`link`, `title`, `text`, `author`, `date`, `views`) VALUES (?, ?, ?, ?, ?, ?);",
       [link, title, text, author, date, views]
     );
-    console.log(link, title, text, author, date, views);
   });
 }
 
