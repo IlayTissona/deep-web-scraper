@@ -3,13 +3,11 @@ const tr = require("tor-request");
 
 async function main() {
   const allLinks = await getAllLinks();
-  const paste = await getPaste(allLinks[0]);
-  console.log(paste);
 
-  //   allLinks.forEach(async (link) => {
-  //     const paste = await getPaste(link);
-  //     console.log(paste);
-  //   });
+  allLinks.forEach(async (link) => {
+    const paste = await getPaste(link);
+    console.log(paste);
+  });
 }
 main();
 //------------------------------------------------------functions------------------------------------------------------
