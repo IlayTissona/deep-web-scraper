@@ -3,6 +3,8 @@ const db = require("./mySQL.js");
 const PORT = 80;
 
 const app = express();
+const cors = require("cors");
+app.use(cors());
 
 app.get("/all-pastes", (req, res) => {
   db.query("SELECT * FROM `pastes`", (err, results) => {
