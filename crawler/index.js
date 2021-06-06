@@ -2,10 +2,17 @@ const cheerio = require("cheerio");
 const tr = require("tor-request");
 const db = require("./mySQL.js");
 
+tr.setTorAddress("torproxy");
+
+main();
+setInterval(main, 60000 * 1); //1 minutes
+
 async function main() {
   console.log("running");
   const allLinks = await getAllLinks();
   const existingLinks = await getExistingLinks();
+  console.log(existingLinks);
+  console.log(allLinks);
 
   const newLinks = allLinks.filter((link) => !existingLinks.includes(link));
 
@@ -20,8 +27,7 @@ async function main() {
     console.log(link, title, text, author, date, views);
   });
 }
-setInterval(main, 60000 * 1); //1 minutes
-main();
+
 //------------------------------------------------------functions------------------------------------------------------
 
 async function getPaste(link) {
@@ -32,6 +38,8 @@ async function getPaste(link) {
         return;
       }
       const $ = cheerio.load(body);
+
+      console.log($(".pre-info.pre-header").find("h4").text());
 
       const title = $(".pre-info.pre-header")
         .find("h4")

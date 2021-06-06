@@ -1,0 +1,41 @@
+services:
+  mySQL:
+    image: mysql:latest
+    hostname: mySQL
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: "123456789"
+      MYSQL_DATABASE: "scraper"
+      # - MYSQL_USER="root"
+      # - MYSQL_PASSWORD="123456789"
+      # - MYSQL_ROOT_PASSWORD="123456789"
+    networks:
+      - scraper
+    ports:
+      - "3366:3306"
+    expose:
+      - 3306
+    depends_on:
+      - torproxy
+
+  crawler:
+    image: crawler:latest
+    networks:
+      - scraper
+    depends_on:
+      - mySQL
+
+  torproxy:
+    image: dperson/torproxy:latest
+    networks:
+      - scraper
+    # ports:
+    # - "8118:8118"
+    # - "9050:9050"
+    # expose:
+    # - "8118"
+    # - "9050"
+
+networks:
+  scraper:
+    driver: bridge
