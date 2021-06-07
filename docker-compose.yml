@@ -8,16 +8,14 @@ services:
     hostname: mySQL
     networks:
       - scraper
-    depends_on:
-      - torproxy
+    volumes:
+      - mysqlvolume:/home/node/app
 
   crawler:
     image: crawler:latest
     restart: always
     networks:
       - scraper
-    depends_on:
-      - mySQL
 
   torproxy:
     image: dperson/torproxy:latest
@@ -28,9 +26,6 @@ services:
     image: server:latest
     networks:
       - scraper
-    depends_on:
-      - mySQL
-    # command: ["./wait-for-it.sh", "mySQL:3306", "--", "npm", "start"]
     ports:
       - "3000:80"
     restart: always
@@ -48,3 +43,6 @@ services:
 networks:
   scraper:
     driver: bridge
+
+volumes:
+  mysqlvolume:

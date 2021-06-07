@@ -3,6 +3,7 @@ import Loader from "./Loader";
 import axios from "axios";
 import InfiniteScroll from "react-infinite-scroll-component";
 import "../styles/PastesTable.css";
+import OpenPaste from "./OpenPaste";
 
 const PAGE_SIZE = 25;
 
@@ -45,6 +46,11 @@ function PastesTable() {
 
   return state.loading ? (
     <Loader />
+  ) : state.openPaste ? (
+    <OpenPaste
+      paste={state.openPaste}
+      close={() => setState({ ...state, openPaste: null })}
+    />
   ) : (
     <div id="main-table">
       <div id="thead">
@@ -73,7 +79,7 @@ function PastesTable() {
             </div>
           }
         >
-          {state.pastes.map(makeRow)}
+          {state.pastes && state.pastes?.map(makeRow)}
         </InfiniteScroll>
       </div>
     </div>
@@ -84,7 +90,7 @@ function PastesTable() {
       <div
         className="row"
         key={post.id}
-        onClick={() => setState({ ...state, openPaste: post.id })}
+        onClick={() => setState({ ...state, openPaste: post })}
       >
         <div className="post-date">{new Date(post.date).toDateString()}</div>
         <div className="post-author">{post.author}</div>

@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AAAA,cAAc,CAAC;EACb,WAAW,EAAE,QAAQ;EACrB,UAAU,EAAE,MAAM;CACnB",
+    "sources": [
+        "OpenPaste.scss"
+    ],
+    "names": [],
+    "file": "OpenPaste.css"
+}

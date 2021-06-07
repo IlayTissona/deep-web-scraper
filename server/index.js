@@ -9,7 +9,7 @@ app.use(cors());
 app.get("/all-pastes", (req, res) => {
   const { limit, offset } = req.query;
   db.query(
-    "SELECT * FROM `pastes` LIMIT ?, ? ORDER BY `date` DESC",
+    "SELECT * FROM `pastes` ORDER BY `date` DESC LIMIT ?, ?",
     [Number(offset), Number(limit)],
     (err, results) => {
       if (err) return res.json(err);
