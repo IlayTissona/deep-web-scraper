@@ -11,9 +11,9 @@ const useIntersection = (ref, rootMargin) => {
       { rootMargin }
     );
 
-    element && observer.observe(element);
+    ref.current && observer.observe(element);
 
-    return () => element && observer.unobserve(element);
+    return () => (element ? observer.unobserve(element) : undefined);
   });
 
   return isVisible;

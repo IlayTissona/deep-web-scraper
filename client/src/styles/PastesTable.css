@@ -1,34 +1,38 @@
-thead {
+#thead {
   width: 98vw;
   text-align: center;
   position: fixed;
   top: 14vh;
 }
 
-thead tr {
+#thead .row {
   display: -ms-grid;
   display: grid;
   -ms-grid-columns: 15% 15% 25% 40% 5%;
       grid-template-columns: 15% 15% 25% 40% 5%;
 }
 
-thead th {
+#thead .row div {
   height: 5vh;
   line-height: 5vh;
   font-size: 1.2rem;
   border: 1px solid black;
 }
 
-tbody {
+.infinite-scroll-component__outerdiv ::-webkit-scrollbar {
+  display: none;
+}
+
+#table-body {
   width: 100vw;
   height: 70vh;
   position: fixed;
-  overflow-y: scroll;
   bottom: 10vh;
   top: 20vh;
+  overflow-y: scroll;
 }
 
-tbody tr {
+#table-body .row {
   height: 8vh;
   width: 98vw;
   display: -ms-grid;
@@ -39,7 +43,7 @@ tbody tr {
   margin-top: 10px;
 }
 
-tbody tr td {
+#table-body .row div {
   max-height: 100%;
   border: 1px solid black;
   padding: 2px;
@@ -63,23 +67,20 @@ tbody tr td {
   font-size: 0.7rem;
 }
 
-.more-pastes {
+.last-row {
   display: -ms-grid;
   display: grid;
   -ms-grid-columns: 5% 90% 5%;
       grid-template-columns: 5% 90% 5%;
 }
 
-.more-pastes td {
+.last-row p {
+  text-align: center;
+  height: 5vh;
+  line-height: 5vh;
   -ms-grid-column: 2;
   grid-column: 2;
   font-size: 1.5rem;
-  border-radius: 50px;
-}
-
-.more-pastes :hover {
-  -webkit-filter: brightness(50%);
-          filter: brightness(50%);
-  color: white;
+  border: none;
 }
 /*# sourceMappingURL=PastesTable.css.map */

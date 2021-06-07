@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import Loader from "./Loader";
 import axios from "axios";
-import useIntersection from "../Hooks/useIntersrction";
+import InfiniteScroll from "react-infinite-scroll-component";
 import "../styles/PastesTable.css";
 
 const PAGE_SIZE = 25;
@@ -14,6 +14,8 @@ function PastesTable() {
     offset: PAGE_SIZE,
     offsetLoading: false,
   });
+
+  const [hasMore, setHasMore] = useState(true);
 
   useEffect(() => {
     axios
@@ -28,59 +30,68 @@ function PastesTable() {
       .catch((e) => setState({ error: e }));
   }, []);
 
-  const lastRowRef = useRef();
-  const lastRowInView = useIntersection(lastRowRef, "0px");
-
   const morePastes = (e) => {
-    if (lastRowInView) {
-      setState({ ...state, offsetLoading: true });
-      axios
-        .get("http://localhost:3000/all-pastes?limit=25&offset=" + state.offset)
-        .then((res) => {
-          setState({
-            ...state,
-            offsetLoading: false,
-            pastes: [...state.pastes, ...res.data],
-            offset: state.offset + res.data.length,
-          });
+    axios
+      .get("http://localhost:3000/all-pastes?limit=25&offset=" + state.offset)
+      .then((res) => {
+        if (!res.data.length) setHasMore(false);
+        setState({
+          ...state,
+          pastes: [...state.pastes, ...res.data],
+          offset: state.offset + res.data.length,
         });
-    }
+      });
   };
 
   return state.loading ? (
     <Loader />
   ) : (
-    <table id="main-table">
-      <thead>
-        <tr>
-          <th>Date</th>
-          <th>Author</th>
-          <th>Title</th>
-          <th>Content</th>
-          <th>Views</th>
-        </tr>
-      </thead>
-      <tbody onScroll={morePastes}>
-        {state.pastes.map(makeRow)}
-        <tr className="more-pastes" ref={lastRowRef}>
-          <td>{state.offsetLoading ? "Loading More ..." : "No More Pastes"}</td>
-        </tr>
-      </tbody>
-    </table>
+    <div id="main-table">
+      <div id="thead">
+        <div className="row">
+          <div>Date</div>
+          <div>Author</div>
+          <div>Title</div>
+          <div>Content</div>
+          <div>Views</div>
+        </div>
+      </div>
+      <div id="table-body">
+        <InfiniteScroll
+          hasMore={hasMore}
+          dataLength={state.pastes.length}
+          next={morePastes}
+          scrollableTarget="table-body"
+          loader={
+            <div className="last-row">
+              <p>Loading More...</p>
+            </div>
+          }
+          endMessage={
+            <div className="last-row">
+              <p>No More Pastes.</p>
+            </div>
+          }
+        >
+          {state.pastes.map(makeRow)}
+        </InfiniteScroll>
+      </div>
+    </div>
   );
 
   function makeRow(post) {
     return (
-      <tr
+      <div
+        className="row"
         key={post.id}
         onClick={() => setState({ ...state, openPaste: post.id })}
       >
-        <td className="post-date">{new Date(post.date).toDateString()}</td>
-        <td className="post-author">{post.author}</td>
-        <td className="post-title">{post.title}</td>
-        <td className="post-content">{post.text}</td>
-        <td className="post-views">{post.views}</td>
-      </tr>
+        <div className="post-date">{new Date(post.date).toDateString()}</div>
+        <div className="post-author">{post.author}</div>
+        <div className="post-title">{post.title}</div>
+        <div className="post-content">{post.text}</div>
+        <div className="post-views">{post.views}</div>
+      </div>
     );
   }
 }
