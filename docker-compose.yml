@@ -1,11 +1,11 @@
 services:
   mySQL:
     image: mysql:latest
-    hostname: mySQL
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: "123456789"
       MYSQL_DATABASE: "scraper"
+    hostname: mySQL
     networks:
       - scraper
     depends_on:
@@ -13,6 +13,7 @@ services:
 
   crawler:
     image: crawler:latest
+    restart: always
     networks:
       - scraper
     depends_on:

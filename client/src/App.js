@@ -10,7 +10,7 @@ function App() {
         <h4>NOTE</h4>
         <div>
           This website shows content from a deep/dark web paste holder. Pastes
-          may contain illegal, or even worse than just illegal content. Be
+          may contain illegal, or even worse than illegal content. Be
           responsible, chose the right path.
         </div>
       </div>

@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Loader from "./Loader";
 import axios from "axios";
+import useIntersection from "../Hooks/useIntersrction";
 import "../styles/PastesTable.css";
 
 const PAGE_SIZE = 25;
@@ -18,23 +19,32 @@ function PastesTable() {
     axios
       .get(`http://localhost:3000/all-pastes?limit=${PAGE_SIZE}&offset=0`)
       .then((res) => {
-        setState({ ...state, loading: false, pastes: res.data });
-        console.log(res.data);
-      });
+        setState((prevState) => ({
+          ...prevState,
+          loading: false,
+          pastes: res.data,
+        }));
+      })
+      .catch((e) => setState({ error: e }));
   }, []);
 
-  const morePastes = () => {
-    setState({ ...state, offsetLoading: true });
-    axios
-      .get("http://localhost:3000/all-pastes?limit=25&offset=" + state.offset)
-      .then((res) => {
-        setState({
-          ...state,
-          offSetloading: false,
-          pastes: [...state.pastes, ...res.data],
-          offset: state.offset + res.data.length,
+  const lastRowRef = useRef();
+  const lastRowInView = useIntersection(lastRowRef, "0px");
+
+  const morePastes = (e) => {
+    if (lastRowInView) {
+      setState({ ...state, offsetLoading: true });
+      axios
+        .get("http://localhost:3000/all-pastes?limit=25&offset=" + state.offset)
+        .then((res) => {
+          setState({
+            ...state,
+            offsetLoading: false,
+            pastes: [...state.pastes, ...res.data],
+            offset: state.offset + res.data.length,
+          });
         });
-      });
+    }
   };
 
   return state.loading ? (
@@ -50,10 +60,10 @@ function PastesTable() {
           <th>Views</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody onScroll={morePastes}>
         {state.pastes.map(makeRow)}
-        <tr className="more-pastes" onClick={morePastes}>
-          <td>More</td>
+        <tr className="more-pastes" ref={lastRowRef}>
+          <td>{state.offsetLoading ? "Loading More ..." : "No More Pastes"}</td>
         </tr>
       </tbody>
     </table>
