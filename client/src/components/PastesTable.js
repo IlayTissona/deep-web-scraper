@@ -46,11 +46,6 @@ function PastesTable() {
 
   return state.loading ? (
     <Loader />
-  ) : state.openPaste ? (
-    <OpenPaste
-      paste={state.openPaste}
-      close={() => setState({ ...state, openPaste: null })}
-    />
   ) : (
     <div id="main-table">
       <div id="thead">
@@ -82,6 +77,12 @@ function PastesTable() {
           {state.pastes && state.pastes?.map(makeRow)}
         </InfiniteScroll>
       </div>
+      {state.openPaste ? (
+        <OpenPaste
+          paste={state.openPaste}
+          close={() => setState({ ...state, openPaste: null })}
+        />
+      ) : null}
     </div>
   );
 
