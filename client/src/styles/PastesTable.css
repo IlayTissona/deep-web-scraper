@@ -1,12 +1,15 @@
 thead {
   width: 98vw;
+  text-align: center;
+  position: fixed;
+  top: 14vh;
+}
+
+thead tr {
   display: -ms-grid;
   display: grid;
   -ms-grid-columns: 15% 15% 25% 40% 5%;
       grid-template-columns: 15% 15% 25% 40% 5%;
-  text-align: center;
-  position: fixed;
-  top: 14vh;
 }
 
 thead th {
@@ -33,19 +36,50 @@ tbody tr {
   -ms-grid-columns: 15% 15% 25% 40% 5%;
       grid-template-columns: 15% 15% 25% 40% 5%;
   text-align: center;
+  margin-top: 10px;
 }
 
 tbody tr td {
+  max-height: 100%;
   border: 1px solid black;
+  padding: 2px;
+  word-wrap: break-word;
+  line-height: 8vh;
+  border-radius: 10px;
+  margin: 1px;
 }
 
 .post-content {
   overflow: hidden;
-  height: inherit;
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   /* number of lines to show */
   -webkit-box-orient: vertical;
+  line-height: 4vh;
+}
+
+.post-views {
+  font-size: 0.7rem;
+}
+
+.more-pastes {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 5% 90% 5%;
+      grid-template-columns: 5% 90% 5%;
+}
+
+.more-pastes td {
+  -ms-grid-column: 2;
+  grid-column: 2;
+  font-size: 1.5rem;
+  border-radius: 50px;
+}
+
+.more-pastes :hover {
+  -webkit-filter: brightness(50%);
+          filter: brightness(50%);
+  color: white;
 }
 /*# sourceMappingURL=PastesTable.css.map */

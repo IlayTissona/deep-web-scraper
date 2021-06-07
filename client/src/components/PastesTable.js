@@ -19,6 +19,7 @@ function PastesTable() {
       .get(`http://localhost:3000/all-pastes?limit=${PAGE_SIZE}&offset=0`)
       .then((res) => {
         setState({ ...state, loading: false, pastes: res.data });
+        console.log(res.data);
       });
   }, []);
 
@@ -41,32 +42,36 @@ function PastesTable() {
   ) : (
     <table id="main-table">
       <thead>
-        <th>Date</th>
-        <th>Author</th>
-        <th>Title</th>
-        <th>Content</th>
-        <th>Views</th>
+        <tr>
+          <th>Date</th>
+          <th>Author</th>
+          <th>Title</th>
+          <th>Content</th>
+          <th>Views</th>
+        </tr>
       </thead>
       <tbody>
         {state.pastes.map(makeRow)}
         <tr className="more-pastes" onClick={morePastes}>
-          More
+          <td>More</td>
         </tr>
       </tbody>
     </table>
   );
-}
 
-function makeRow(post, index) {
-  return (
-    <tr key={index}>
-      <td className="post-date">{new Date(post.date).toDateString()}</td>
-      <td className="post-author">{post.author}</td>
-      <td className="post-title">{post.title}</td>
-      <td className="post-content">{post.text}</td>
-      <td className="post-views">{post.views}</td>
-    </tr>
-  );
+  function makeRow(post) {
+    return (
+      <tr
+        key={post.id}
+        onClick={() => setState({ ...state, openPaste: post.id })}
+      >
+        <td className="post-date">{new Date(post.date).toDateString()}</td>
+        <td className="post-author">{post.author}</td>
+        <td className="post-title">{post.title}</td>
+        <td className="post-content">{post.text}</td>
+        <td className="post-views">{post.views}</td>
+      </tr>
+    );
+  }
 }
-
 export default PastesTable;
