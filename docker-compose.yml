@@ -29,8 +29,10 @@ services:
       - scraper
     depends_on:
       - mySQL
+    # command: ["./wait-for-it.sh", "mySQL:3306", "--", "npm", "start"]
     ports:
       - "3000:80"
+    restart: always
 
   client:
     image: client:latest

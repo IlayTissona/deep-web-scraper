@@ -3,19 +3,38 @@ import Loader from "./Loader";
 import axios from "axios";
 import "../styles/PastesTable.css";
 
+const PAGE_SIZE = 25;
+
 function PastesTable() {
   const [state, setState] = useState({
     loading: true,
     pastes: [],
     openPaste: null,
+    offset: PAGE_SIZE,
+    offsetLoading: false,
   });
 
   useEffect(() => {
-    axios.get("http://localhost:3000/all-pastes").then((res) => {
-      console.log(res.data);
-      setState({ ...state, loading: false, pastes: res.data });
-    });
+    axios
+      .get(`http://localhost:3000/all-pastes?limit=${PAGE_SIZE}&offset=0`)
+      .then((res) => {
+        setState({ ...state, loading: false, pastes: res.data });
+      });
   }, []);
+
+  const morePastes = () => {
+    setState({ ...state, offsetLoading: true });
+    axios
+      .get("http://localhost:3000/all-pastes?limit=25&offset=" + state.offset)
+      .then((res) => {
+        setState({
+          ...state,
+          offSetloading: false,
+          pastes: [...state.pastes, ...res.data],
+          offset: state.offset + res.data.length,
+        });
+      });
+  };
 
   return state.loading ? (
     <Loader />
@@ -28,7 +47,12 @@ function PastesTable() {
         <th>Content</th>
         <th>Views</th>
       </thead>
-      <tbody>{state.pastes.map(makeRow)}</tbody>
+      <tbody>
+        {state.pastes.map(makeRow)}
+        <tr className="more-pastes" onClick={morePastes}>
+          More
+        </tr>
+      </tbody>
     </table>
   );
 }

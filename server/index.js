@@ -7,10 +7,15 @@ const cors = require("cors");
 app.use(cors());
 
 app.get("/all-pastes", (req, res) => {
-  db.query("SELECT * FROM `pastes`", (err, results) => {
-    if (err) return res.json(err);
-    res.json(results);
-  });
+  const { limit, offset } = req.query;
+  db.query(
+    "SELECT * FROM `pastes` LIMIT ?, ?",
+    [Number(offset), Number(limit)],
+    (err, results) => {
+      if (err) return res.json(err);
+      res.json(results);
+    }
+  );
 });
 
 app.get("/all-authors", (req, res) => {
