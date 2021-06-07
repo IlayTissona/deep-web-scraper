@@ -33,8 +33,6 @@ async function getPaste(link) {
       }
       const $ = cheerio.load(body);
 
-      console.log($(".pre-info.pre-header").find("h4").text());
-
       const title = $(".pre-info.pre-header")
         .find("h4")
         .text()

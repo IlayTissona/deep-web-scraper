@@ -27,11 +27,20 @@ services:
     image: server:latest
     networks:
       - scraper
-      - default
     depends_on:
       - mySQL
     ports:
       - "3000:80"
+
+  client:
+    image: client:latest
+    networks:
+      - scraper
+      - default
+    depends_on:
+      - server
+    ports:
+      - "8080:80"
 
 networks:
   scraper:

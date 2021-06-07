@@ -3,13 +3,6 @@ import Loader from "./Loader";
 import axios from "axios";
 import "../styles/PastesTable.css";
 
-axios.defaults = {
-  proxy: {
-    host: "localhost",
-    port: 3000,
-  },
-};
-
 function PastesTable() {
   const [state, setState] = useState({
     loading: true,
