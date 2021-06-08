@@ -9,17 +9,15 @@ setInterval(main, 60000 * 2); //2 minutes
 async function main() {
   const allLinks = await getAllLinks();
   const existingLinks = await getExistingLinks();
-  const newLinks = allLinks.filter((link) => !existingLinks.includes(link));
-  const oldLinks = allLinks.filter((link) => existingLinks.includes(link));
 
-  newLinks.forEach(async (pasteLink) => {
-    const views = getViews(pasteLink);
-    const { link, title, text, author, date, views } = await getPaste(
-      pasteLink
-    );
+  const newLinks = allLinks.filter((link) => !existingLinks.includes(link));
+
+  existingLinks.forEach(async (pasteLink) => {
+    const views = await getViews(pasteLink);
     db.query(
-      "INSERT INTO `scraper`.`pastes` (`link`, `title`, `text`, `author`, `date`, `views`) VALUES (?, ?, ?, ?, ?, ?);",
-      [link, title, text, author, date, views]
+      "UPDATE `scraper`.`pastes` SET `views` = ? WHERE link = ?",
+      [views, pasteLink],
+      console.log
     );
   });
 

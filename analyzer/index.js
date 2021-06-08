@@ -27,7 +27,7 @@ async function tagPost(postId) {
       if (err) return console.log(err);
 
       const { 0: post } = results;
-      if (!post) return setTimeout(() => tagPost(postId + 1), 60000);
+      if (!post) return setTimeout(() => tagPost(), 60000);
 
       const res = await requestPromise
         .post("https://api.nlpcloud.io/v1/en_core_web_lg/entities", {
