@@ -14,11 +14,10 @@ async function main() {
 
   existingLinks.forEach(async (pasteLink) => {
     const views = await getViews(pasteLink);
-    db.query(
-      "UPDATE `scraper`.`pastes` SET `views` = ? WHERE link = ?",
-      [views, pasteLink],
-      console.log
-    );
+    db.query("UPDATE `scraper`.`pastes` SET `views` = ? WHERE link = ?", [
+      views,
+      pasteLink,
+    ]);
   });
 
   newLinks.forEach(async (pasteLink) => {
