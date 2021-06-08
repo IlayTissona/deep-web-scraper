@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "mysql2": "^2.2.5",
+    "request-promise": "^4.2.6"
+  },
+  "scripts": {
+    "start": "node ."
+  }
+}

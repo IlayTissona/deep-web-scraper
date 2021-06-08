@@ -1,5 +1,5 @@
 #thead {
-  width: 98vw;
+  width: 99vw;
   text-align: center;
   position: fixed;
   top: 14vh;
@@ -34,7 +34,7 @@
 
 #table-body .row {
   height: 8vh;
-  width: 98vw;
+  width: 100%;
   display: -ms-grid;
   display: grid;
   -ms-grid-columns: 15% 15% 25% 40% 5%;

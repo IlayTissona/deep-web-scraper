@@ -47,43 +47,45 @@ function PastesTable() {
   return state.loading ? (
     <Loader />
   ) : (
-    <div id="main-table">
-      <div id="thead">
-        <div className="row">
-          <div>Date</div>
-          <div>Author</div>
-          <div>Title</div>
-          <div>Content</div>
-          <div>Views</div>
+    <>
+      <div id="main-table">
+        <div id="thead">
+          <div className="row">
+            <div>Date</div>
+            <div>Author</div>
+            <div>Title</div>
+            <div>Content</div>
+            <div>Views</div>
+          </div>
         </div>
+        <div id="table-body">
+          <InfiniteScroll
+            hasMore={hasMore}
+            dataLength={state.pastes.length}
+            next={morePastes}
+            scrollableTarget="table-body"
+            loader={
+              <div className="last-row">
+                <p>Loading More...</p>
+              </div>
+            }
+            endMessage={
+              <div className="last-row">
+                <p>No More Pastes.</p>
+              </div>
+            }
+          >
+            {state.pastes && state.pastes?.map(makeRow)}
+          </InfiniteScroll>
+        </div>
+        {state.openPaste ? (
+          <OpenPaste
+            paste={state.openPaste}
+            close={() => setState({ ...state, openPaste: null })}
+          />
+        ) : null}
       </div>
-      <div id="table-body">
-        <InfiniteScroll
-          hasMore={hasMore}
-          dataLength={state.pastes.length}
-          next={morePastes}
-          scrollableTarget="table-body"
-          loader={
-            <div className="last-row">
-              <p>Loading More...</p>
-            </div>
-          }
-          endMessage={
-            <div className="last-row">
-              <p>No More Pastes.</p>
-            </div>
-          }
-        >
-          {state.pastes && state.pastes?.map(makeRow)}
-        </InfiniteScroll>
-      </div>
-      {state.openPaste ? (
-        <OpenPaste
-          paste={state.openPaste}
-          close={() => setState({ ...state, openPaste: null })}
-        />
-      ) : null}
-    </div>
+    </>
   );
 
   function makeRow(post) {

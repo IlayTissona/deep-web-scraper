@@ -17,6 +17,12 @@ services:
     networks:
       - scraper
 
+  analyzer:
+    image: analyzer:latest
+    # restart: always
+    networks:
+      - scraper
+
   torproxy:
     image: dperson/torproxy:latest
     networks:

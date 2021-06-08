@@ -10,6 +10,18 @@ async function main() {
   const allLinks = await getAllLinks();
   const existingLinks = await getExistingLinks();
   const newLinks = allLinks.filter((link) => !existingLinks.includes(link));
+  const oldLinks = allLinks.filter((link) => existingLinks.includes(link));
+
+  newLinks.forEach(async (pasteLink) => {
+    const views = getViews(pasteLink);
+    const { link, title, text, author, date, views } = await getPaste(
+      pasteLink
+    );
+    db.query(
+      "INSERT INTO `scraper`.`pastes` (`link`, `title`, `text`, `author`, `date`, `views`) VALUES (?, ?, ?, ?, ?, ?);",
+      [link, title, text, author, date, views]
+    );
+  });
 
   newLinks.forEach(async (pasteLink) => {
     const { link, title, text, author, date, views } = await getPaste(
@@ -53,6 +65,27 @@ async function getPaste(link) {
 
       const pasteObj = { link, title, text, author, date, views };
       resolve(pasteObj);
+    });
+  });
+}
+
+async function getViews(link) {
+  return new Promise((resolve, reject) => {
+    tr.request(link, function (err, res, body) {
+      if (err || res.statusCode !== 200) {
+        reject("unavailable");
+        return;
+      }
+      const $ = cheerio.load(body);
+      const footerTextSplitted = $(".pre-info.pre-footer")
+        .text()
+        .replaceAll("\t", "")
+        .replaceAll("\n", "") // "Posted by Anonymous at 06 Jun 2021, 09:37:46 UTCLanguage: text • Views: 93"
+        .split(" "); //[ "Posted", "by", "Anonymous", "at", "06", "Jun", "2021,", "09:37:46", "UTCLanguage:", "text", "•", "Views:", "93" ]
+
+      const views = footerTextSplitted[footerTextSplitted.length - 1]; //"93"
+
+      resolve(views);
     });
   });
 }

@@ -5,8 +5,8 @@
 #full-screen-blur {
   height: 100vh;
   width: 100vw;
-  filter: blur();
   position: fixed;
+  backdrop-filter: blur(0.5rem);
   inset: 0;
 }
 
@@ -24,6 +24,11 @@
   white-space: pre-wrap;
   text-align: center;
   height: 60vh;
+  width: 70vw;
+  display: block;
+  margin: auto;
+  border: 1px solid grey;
+  border-radius: 1vh;
   overflow-y: scroll;
 }
 
