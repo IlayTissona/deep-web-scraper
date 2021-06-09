@@ -3,6 +3,9 @@
   bottom: 0;
   width: 100vw;
   height: 10vh;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
 }
 
 #search-div {
@@ -41,5 +44,71 @@
 #search-div #buttons .picked {
   -webkit-filter: brightness(70%);
           filter: brightness(70%);
+}
+
+#entities {
+  width: 50%;
+  height: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  overflow-x: scroll;
+  overflow-y: hidden;
+}
+
+#entities .entity {
+  display: block;
+  padding: 5px;
+  margin-top: 1vh;
+  margin-right: 1vh;
+  border: 1px solid black;
+  border-radius: 40px;
+  height: 4vh;
+}
+
+#entities .entity p {
+  line-height: 4vh;
+  margin: 0;
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+}
+
+#entities .chosen {
+  width: 48vw;
+  -webkit-filter: brightness(80%);
+          filter: brightness(80%);
+}
+
+#entities .chosen p {
+  width: 100%;
+  text-align: center;
+}
+
+#entities .no-scroll {
+  overflow: hidden;
+}
+
+#entities .infinite-scroll-component {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
+}
+
+#entities .infinite-scroll-component {
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
 }
 /*# sourceMappingURL=FiltersBar.css.map */
