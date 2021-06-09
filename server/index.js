@@ -91,7 +91,7 @@ app.post("/search/", (req, res) => {
 
   db.query(query, (err, results) => {
     if (err) return res.json(err);
-    res.json({ results });
+    res.json(results);
   });
 });
 

@@ -1,0 +1,35 @@
+#filters-bar {
+  position: absolute;
+  bottom: 0;
+  width: 100vw;
+  height: 10vh;
+}
+
+#search-div {
+  width: 50%;
+  height: 100%;
+  input {
+    width: 80%;
+    border-radius: 20px;
+    padding: 5px;
+  }
+  #buttons {
+    height: 40%;
+    width: 80%;
+    margin: auto;
+    display: flex;
+    justify-content: space-around;
+    p {
+      width: 30%;
+      line-height: 100%;
+    }
+    button {
+      width: 30%;
+      margin-top: 5px;
+      border-radius: 20px;
+    }
+    .picked {
+      filter: brightness(70%);
+    }
+  }
+}

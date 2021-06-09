@@ -1,9 +1,10 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Loader from "./Loader";
 import axios from "axios";
 import InfiniteScroll from "react-infinite-scroll-component";
 import "../styles/PastesTable.css";
 import OpenPaste from "./OpenPaste";
+import FiltersBar from "./FiltersBar";
 
 const PAGE_SIZE = 25;
 
@@ -85,6 +86,14 @@ function PastesTable() {
           />
         ) : null}
       </div>
+      <FiltersBar
+        setList={(pastes) => {
+          setState({ ...state, pastes });
+        }}
+        setScrollable={(bool) => {
+          setHasMore(bool);
+        }}
+      />
     </>
   );
 
