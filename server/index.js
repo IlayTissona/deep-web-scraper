@@ -4,7 +4,9 @@ const PORT = 80;
 
 const app = express();
 const cors = require("cors");
+const { json } = require("express");
 app.use(cors());
+app.use(express.json());
 
 app.get("/all-pastes", (req, res) => {
   const { limit, offset } = req.query;
@@ -27,6 +29,10 @@ app.get("/all-authors", (req, res) => {
 
 app.get("/author/:authorName", (req, res) => {
   const { authorName } = req.params;
+  const onlyValidChars = new RegExp(/^[a-zA-Z0-9 .!?"-]+$/);
+  const isSomeOneTryingToFuckWithMe = !onlyValidChars.test(searchValue);
+  if (isSomeOneTryingToFuckWithMe)
+    return res.json({ error: "sqlInjectionAttempt" });
   db.query(
     "SELECT * FROM `pastes` WHERE author = ?",
     [authorName],
@@ -59,8 +65,33 @@ app.get("/entities/", (req, res) => {
     "ORDER BY `posts_count` DESC LIMIT ? , ?;";
 
   db.query(query, [Number(offset), Number(limit)], (err, results) => {
-    if (err) return res.json(err);
+    if (err) return res.sendStatus(503);
     res.json(results);
+  });
+});
+
+app.post("/search/", (req, res) => {
+  let { searchValue, key } = req.body;
+  const onlyValidChars = new RegExp(/^[a-zA-Z0-9 .!?"-]+$/);
+  const isSomeOneTryingToFuckWithMe = !onlyValidChars.test(searchValue);
+  const isSomeOneMoreCleverTryingToFuckWithMe =
+    key !== "text" && key !== "author";
+
+  if (isSomeOneMoreCleverTryingToFuckWithMe || isSomeOneTryingToFuckWithMe)
+    return res.json({ error: "sqlInjectionAttempt" });
+
+  searchValue = `%${searchValue}%`;
+
+  const query =
+    "SELECT * FROM `scraper`.`pastes` WHERE `" +
+    key +
+    "` LIKE '" +
+    searchValue +
+    "' ORDER BY `views` DESC";
+
+  db.query(query, (err, results) => {
+    if (err) return res.json(err);
+    res.json({ results });
   });
 });
 
