@@ -16,7 +16,7 @@ const INTERESTING_TYPES = [
 
 tagPost();
 async function tagPost(postId) {
-  if (!postId) postId = await getLastAnalyzed();
+  if (!postId) postId = await getLastAnalyzed().catch(console.log);
 
   console.log("ANALIZING POST ", postId);
 

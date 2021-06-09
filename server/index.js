@@ -44,7 +44,7 @@ app.get("/entity/:entity", (req, res) => {
       "(SELECT `post_id` FROM `scraper`.`entities_in_postes` WHERE entity = ?)",
     [entity],
     (err, results) => {
-      if (err) return res.json([err, "SSSSSQUERY"]);
+      if (err) return res.sendStatus(503);
       res.json(results);
     }
   );
