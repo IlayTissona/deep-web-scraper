@@ -7,6 +7,8 @@ function FiltersBar({ setList, setScrollable }) {
   const [searchKey, setKey] = useState("text");
   const searchCancelToken = useRef();
 
+  const moreEntitiesCancelToken = useRef();
+
   const [entitiesState, setEntitiesState] = useState({
     entities: [],
     hasMore: true,
@@ -24,16 +26,19 @@ function FiltersBar({ setList, setScrollable }) {
   }, []);
 
   const moreEntities = () => {
+    if (moreEntitiesCancelToken.current)
+      moreEntitiesCancelToken.current.cancel();
+    moreEntitiesCancelToken.current = axios.CancelToken.source();
     axios
       .get(
-        `http://localhost:3000/entities?limit=20&offset=${entitiesState.offset}`
+        `http://localhost:3000/entities?limit=20&offset=${entitiesState.offset}`,
+        { cancelToken: moreEntitiesCancelToken.current.token }
       )
       .then((res) => {
         if (!res.data.length)
           return setEntitiesState({ ...entitiesState, hasMore: false });
 
         const entities = [...entitiesState.entities, ...res.data];
-        console.log(entities);
         setEntitiesState({
           ...entitiesState,
           entities,
@@ -44,17 +49,19 @@ function FiltersBar({ setList, setScrollable }) {
 
   const entityClickHandler = (entity) => {
     if (entitiesState.chosen === entity) {
-      axios.get("http://localhost:3000/entities").then(({ data: entities }) => {
-        setEntitiesState({ ...entitiesState, entities, chosen: null });
+      setEntitiesState({
+        ...entitiesState,
+        chosen: null,
+        hasMore: true,
+        offset: 0,
       });
       return setFullList();
     }
     axios.get("http://localhost:3000/entity/" + entity).then((res) => {
-      console.log(res.data);
       setEntitiesState({
         ...entitiesState,
-        entities: [{ entity }],
         chosen: entity,
+        hasMore: false,
       });
       setList(res.data);
     });
@@ -112,27 +119,32 @@ function FiltersBar({ setList, setScrollable }) {
         id="entities"
         className={`${entitiesState.chosen ? "no-scroll" : ""}`}
       >
-        <InfiniteScroll
-          hasMore={entitiesState.hasMore}
-          dataLength={entitiesState.entities.length}
-          next={moreEntities}
-          scrollableTarget="entities"
-          loader={
-            <div className="entity last">
-              <p>Loading More...</p>
-            </div>
-          }
-          endMessage={<div></div>}
-        >
-          {entitiesState.entities && entitiesState.entities?.map(makeEntity)}
-        </InfiniteScroll>
+        {entitiesState.chosen ? (
+          makeEntity({ entity: entitiesState.chosen })
+        ) : (
+          <InfiniteScroll
+            hasMore={entitiesState.hasMore}
+            dataLength={entitiesState.entities.length}
+            next={moreEntities}
+            scrollableTarget="entities"
+            loader={
+              <div className="entity last">
+                <p>Loading More...</p>
+              </div>
+            }
+            endMessage={<div></div>}
+          >
+            {entitiesState.entities &&
+              entitiesState.entities?.map((ent) => makeEntity(ent))}
+          </InfiniteScroll>
+        )}
       </div>
     </div>
   );
   function makeEntity({ entity }) {
     return (
       <div
-        className={`entity${entitiesState.chosen === entity ? " chosen" : ""}`}
+        className="entity"
         key={entity}
         onClick={() => entityClickHandler(entity)}
       >
