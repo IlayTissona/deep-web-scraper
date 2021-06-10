@@ -1,15 +1,28 @@
+* {
+  background-color: black;
+  color: red;
+  border-color: darkred;
+  font-family: "Times New Roman", Times, serif;
+}
+
 #header {
-  height: 20vh;
+  height: 10vh;
   text-align: center;
   h3 {
-    height: 5vh;
+    font-family: "Courier New", Courier, monospace;
+    height: 3vh;
     margin: 5px;
-    line-height: 5vh;
+    line-height: 3vh;
     font-size: 2rem;
   }
   h4 {
+    font-family: "Courier New", Courier, monospace;
+    font-size: 1.2rem;
     height: 2vh;
     margin: 5px;
+  }
+  div {
+    height: 5vh;
   }
 }
 

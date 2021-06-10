@@ -23,7 +23,7 @@ async function main() {
   newLinks.forEach(async (pasteLink) => {
     const { link, title, text, author, date, views } = await getPaste(
       pasteLink
-    );
+    ).catch((e) => console.log(e, pasteLink));
     db.query(
       "INSERT INTO `scraper`.`pastes` (`link`, `title`, `text`, `author`, `date`, `views`) VALUES (?, ?, ?, ?, ?, ?);",
       [link, title, text, author, date, views]

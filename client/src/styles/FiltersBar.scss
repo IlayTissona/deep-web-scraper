@@ -31,7 +31,7 @@
       border-radius: 20px;
     }
     .picked {
-      filter: brightness(70%);
+      background-color: rgb(39, 39, 39);
     }
   }
 }
@@ -47,9 +47,10 @@
   .entity {
     display: block;
     padding: 5px;
+    padding-inline: 10px;
     margin-top: 1vh;
     margin-right: 1vh;
-    border: 1px solid black;
+    border: 1px solid darkred;
     border-radius: 40px;
     height: 4vh;
 
@@ -61,8 +62,9 @@
   }
   .chosen {
     width: 48vw;
-    filter: brightness(80%);
+    background-color: rgb(39, 39, 39);
     p {
+      background-color: rgb(39, 39, 39);
       width: 100%;
       text-align: center;
     }

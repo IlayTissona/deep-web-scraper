@@ -43,8 +43,7 @@
 }
 
 #search-div #buttons .picked {
-  -webkit-filter: brightness(70%);
-          filter: brightness(70%);
+  background-color: #272727;
 }
 
 #entities {
@@ -64,9 +63,10 @@
 #entities .entity {
   display: block;
   padding: 5px;
+  padding-inline: 10px;
   margin-top: 1vh;
   margin-right: 1vh;
-  border: 1px solid black;
+  border: 1px solid darkred;
   border-radius: 40px;
   height: 4vh;
 }
@@ -81,11 +81,11 @@
 
 #entities .chosen {
   width: 48vw;
-  -webkit-filter: brightness(80%);
-          filter: brightness(80%);
+  background-color: #272727;
 }
 
 #entities .chosen p {
+  background-color: #272727;
   width: 100%;
   text-align: center;
 }

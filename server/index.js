@@ -4,7 +4,6 @@ const PORT = 80;
 
 const app = express();
 const cors = require("cors");
-const { json } = require("express");
 app.use(cors());
 app.use(express.json());
 
@@ -56,8 +55,9 @@ app.get("/entity/:entity", (req, res) => {
   );
 });
 
-app.get("/entities/", (req, res) => {
+app.get("/entities", (req, res) => {
   const { offset = 0, limit = 10 } = req.query;
+
   const query =
     "SELECT `entity`, GROUP_CONCAT (DISTINCT `type`) AS 'types', COUNT(post_id) AS posts_count " +
     "FROM `scraper`.`entities_in_postes` " +

@@ -3,11 +3,12 @@
 }
 
 #full-screen-blur {
+  background-color: transparent;
   height: 100vh;
   width: 100vw;
   position: fixed;
-  -webkit-backdrop-filter: blur(0.5rem);
-          backdrop-filter: blur(0.5rem);
+  -webkit-backdrop-filter: blur(0.2rem);
+          backdrop-filter: blur(0.2rem);
   inset: 0;
 }
 
@@ -18,7 +19,6 @@
   top: 7%;
   left: 10%;
   margin: 0;
-  background-color: white;
 }
 
 .paste-content {

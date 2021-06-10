@@ -3,52 +3,43 @@ services:
     image: mysql:latest
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: "123456789"
-      MYSQL_DATABASE: "scraper"
+      MYSQL_ROOT_PASSWORD: "${MYSQL_PASSWORD}"
+      MYSQL_DATABASE: "${MYSQL_DATABASE}"
     hostname: mySQL
-    networks:
-      - scraper
     volumes:
       - mysqlvolume:/home/node/app
 
   crawler:
     build: ./crawler
     restart: always
-    networks:
-      - scraper
+    environment:
+      MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
+      MYSQL_DATABASE: "${MYSQL_DATABASE}"
+      MYSQL_USER: "${MYSQL_USER}"
+      MYSQL_HOST: "${MYSQL_HOST}"
 
   analyzer:
     image: analyzer:latest
-    # restart: always
-    networks:
-      - scraper
+    restart: always
+    environment:
+      MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
+      MYSQL_DATABASE: "${MYSQL_DATABASE}"
+      MYSQL_USER: "${MYSQL_USER}"
+      MYSQL_HOST: "${MYSQL_HOST}"
 
   torproxy:
     image: dperson/torproxy:latest
-    networks:
-      - scraper
 
   server:
     build: ./server
-    networks:
-      - scraper
     ports:
       - "3000:80"
     restart: always
-
-  client:
-    build: ./client
-    networks:
-      - scraper
-      - default
-    depends_on:
-      - server
-    ports:
-      - "8080:80"
-
-networks:
-  scraper:
-    driver: bridge
+    environment:
+      MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
+      MYSQL_DATABASE: "${MYSQL_DATABASE}"
+      MYSQL_USER: "${MYSQL_USER}"
+      MYSQL_HOST: "${MYSQL_HOST}"
 
 volumes:
   mysqlvolume:

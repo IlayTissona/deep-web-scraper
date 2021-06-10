@@ -7,12 +7,10 @@ function FiltersBar({ setList, setScrollable }) {
   const [searchKey, setKey] = useState("text");
   const searchCancelToken = useRef();
 
-  const moreEntitiesCancelToken = useRef();
-
   const [entitiesState, setEntitiesState] = useState({
     entities: [],
     hasMore: true,
-    offset: 0,
+    offset: 20,
     chosen: null,
   });
   const [error, setError] = useState(null);
@@ -26,35 +24,41 @@ function FiltersBar({ setList, setScrollable }) {
   }, []);
 
   const moreEntities = () => {
-    if (moreEntitiesCancelToken.current)
-      moreEntitiesCancelToken.current.cancel();
-    moreEntitiesCancelToken.current = axios.CancelToken.source();
     axios
       .get(
-        `http://localhost:3000/entities?limit=20&offset=${entitiesState.offset}`,
-        { cancelToken: moreEntitiesCancelToken.current.token }
+        `http://localhost:3000/entities?limit=20&offset=${entitiesState.offset}`
       )
       .then((res) => {
         if (!res.data.length)
           return setEntitiesState({ ...entitiesState, hasMore: false });
 
-        const entities = [...entitiesState.entities, ...res.data];
+        let entities = [...entitiesState.entities, ...res.data];
+        entities = entities.filter(
+          ({ entity }, index) =>
+            entities.findIndex((e) => e.entity === entity) === index // Infinite Scroll has bugs with horizontal scrolling, added filter to avoid duplicates.
+        );
+        const offset = entitiesState.offset + res.data.length;
         setEntitiesState({
           ...entitiesState,
           entities,
-          offset: entities.length,
+          offset,
         });
       });
   };
 
   const entityClickHandler = (entity) => {
     if (entitiesState.chosen === entity) {
-      setEntitiesState({
-        ...entitiesState,
-        chosen: null,
-        hasMore: true,
-        offset: 0,
-      });
+      axios
+        .get(`http://localhost:3000/entities?limit=20`)
+        .then(({ data: entities }) =>
+          setEntitiesState({
+            ...entitiesState,
+            entities,
+            chosen: null,
+            hasMore: true,
+            offset: 0,
+          })
+        );
       return setFullList();
     }
     axios.get("http://localhost:3000/entity/" + entity).then((res) => {
@@ -95,7 +99,9 @@ function FiltersBar({ setList, setScrollable }) {
       })
       .catch(setError);
   };
-  return (
+  return error ? (
+    <div id="filters-bar"> Somethig Went Wrong ...</div>
+  ) : (
     <div id="filters-bar">
       <div id="search-div">
         <input type="text" onChange={changeHandler} placeholder="Search ..." />
@@ -120,7 +126,7 @@ function FiltersBar({ setList, setScrollable }) {
         className={`${entitiesState.chosen ? "no-scroll" : ""}`}
       >
         {entitiesState.chosen ? (
-          makeEntity({ entity: entitiesState.chosen })
+          makeEntity({ entity: entitiesState.chosen }, true)
         ) : (
           <InfiniteScroll
             hasMore={entitiesState.hasMore}
@@ -141,10 +147,10 @@ function FiltersBar({ setList, setScrollable }) {
       </div>
     </div>
   );
-  function makeEntity({ entity }) {
+  function makeEntity({ entity }, chosen) {
     return (
       <div
-        className="entity"
+        className={`entity${chosen ? " chosen" : ""}`}
         key={entity}
         onClick={() => entityClickHandler(entity)}
       >

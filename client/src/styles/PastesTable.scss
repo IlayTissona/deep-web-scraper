@@ -10,7 +10,8 @@
       height: 5vh;
       line-height: 5vh;
       font-size: 1.2rem;
-      border: 1px solid black;
+      border: 1px solid darkred;
+      border-bottom: 4px solid darkred;
     }
   }
 }
@@ -27,6 +28,9 @@
   top: 20vh;
   overflow-y: scroll;
   .row {
+    :hover {
+      background-color: rgb(39, 39, 39);
+    }
     height: 8vh;
     width: 100%;
     display: grid;
@@ -35,7 +39,7 @@
     margin-top: 10px;
     div {
       max-height: 100%;
-      border: 1px solid black;
+      border: 1px solid darkred;
       padding: 2px;
       word-wrap: break-word;
       line-height: 8vh;

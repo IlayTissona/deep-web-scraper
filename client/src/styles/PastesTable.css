@@ -16,7 +16,8 @@
   height: 5vh;
   line-height: 5vh;
   font-size: 1.2rem;
-  border: 1px solid black;
+  border: 1px solid darkred;
+  border-bottom: 4px solid darkred;
 }
 
 .infinite-scroll-component__outerdiv ::-webkit-scrollbar {
@@ -43,9 +44,13 @@
   margin-top: 10px;
 }
 
+#table-body .row :hover {
+  background-color: #272727;
+}
+
 #table-body .row div {
   max-height: 100%;
-  border: 1px solid black;
+  border: 1px solid darkred;
   padding: 2px;
   word-wrap: break-word;
   line-height: 8vh;

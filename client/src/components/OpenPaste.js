@@ -9,7 +9,10 @@ function OpenPaste({ paste, close }) {
     close();
   };
   return (
-    <div id="full-screen-blur" onClick={clickHandler}>
+    <>
+      <div id="full-screen-blur" onClick={clickHandler}>
+        {" "}
+      </div>
       <div id="open-paste">
         <button id="close-button" onClick={close}>
           X
@@ -22,7 +25,7 @@ function OpenPaste({ paste, close }) {
           Original Link: {paste.link}
         </div>
       </div>
-    </div>
+    </>
   );
 }
 
