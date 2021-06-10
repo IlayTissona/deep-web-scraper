@@ -17,7 +17,7 @@ function FiltersBar({ setList, setScrollable }) {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3000/entities?limit=20`)
+      .get(`http://192.168.0.108:3000/entities?limit=20`)
       .then(({ data: entities }) =>
         setEntitiesState((prev) => ({ ...prev, entities }))
       );
@@ -26,7 +26,7 @@ function FiltersBar({ setList, setScrollable }) {
   const moreEntities = () => {
     axios
       .get(
-        `http://localhost:3000/entities?limit=20&offset=${entitiesState.offset}`
+        `http://192.168.0.108:3000/entities?limit=20&offset=${entitiesState.offset}`
       )
       .then((res) => {
         if (!res.data.length)
@@ -49,7 +49,7 @@ function FiltersBar({ setList, setScrollable }) {
   const entityClickHandler = (entity) => {
     if (entitiesState.chosen === entity) {
       axios
-        .get(`http://localhost:3000/entities?limit=20`)
+        .get(`http://192.168.0.108:3000/entities?limit=20`)
         .then(({ data: entities }) =>
           setEntitiesState({
             ...entitiesState,
@@ -61,7 +61,7 @@ function FiltersBar({ setList, setScrollable }) {
         );
       return setFullList();
     }
-    axios.get("http://localhost:3000/entity/" + entity).then((res) => {
+    axios.get("http://192.168.0.108:3000/entity/" + entity).then((res) => {
       setEntitiesState({
         ...entitiesState,
         chosen: entity,
@@ -73,7 +73,7 @@ function FiltersBar({ setList, setScrollable }) {
 
   const setFullList = () => {
     axios
-      .get(`http://localhost:3000/all-pastes?limit=20&offset=0`)
+      .get(`http://192.168.0.108:3000/all-pastes?limit=20&offset=0`)
       .then((res) => {
         setList(res.data);
         setScrollable(true);
@@ -87,7 +87,7 @@ function FiltersBar({ setList, setScrollable }) {
     searchCancelToken.current = axios.CancelToken.source();
     axios
       .post(
-        "http://localhost:3000/search",
+        "http://192.168.0.108:3000/search",
         { key: searchKey, searchValue },
         {
           cancelToken: searchCancelToken.current.token,

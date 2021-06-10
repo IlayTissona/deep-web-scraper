@@ -71,6 +71,11 @@
   height: 4vh;
 }
 
+#entities .entity :hover {
+  cursor: pointer;
+  color: #ff7575;
+}
+
 #entities .entity p {
   line-height: 4vh;
   margin: 0;

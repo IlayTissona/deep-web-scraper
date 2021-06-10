@@ -21,7 +21,7 @@ function PastesTable() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3000/all-pastes?limit=${PAGE_SIZE}&offset=0`)
+      .get(`http://192.168.0.108:3000/all-pastes?limit=${PAGE_SIZE}&offset=0`)
       .then((res) => {
         setState((prevState) => ({
           ...prevState,
@@ -29,12 +29,14 @@ function PastesTable() {
           pastes: res.data,
         }));
       })
-      .catch((e) => setState({ error: e }));
+      .catch((e) => setState({ error: e, pastes: [] }));
   }, []);
 
   const morePastes = (e) => {
     axios
-      .get("http://localhost:3000/all-pastes?limit=25&offset=" + state.offset)
+      .get(
+        "http://192.168.0.108:3000/all-pastes?limit=25&offset=" + state.offset
+      )
       .then((res) => {
         if (!res.data.length) setHasMore(false);
         setState({

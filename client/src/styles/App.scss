@@ -3,6 +3,7 @@
   color: red;
   border-color: darkred;
   font-family: "Times New Roman", Times, serif;
+  letter-spacing: 1px;
 }
 
 #header {
@@ -32,12 +33,14 @@
 
 ::-webkit-scrollbar-track {
   border-radius: 10px;
+  background-color: rgb(51, 0, 0);
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
   box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
 }
 
 ::-webkit-scrollbar-thumb {
   border-radius: 10px;
+  background-color: darkred;
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
   box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
 }

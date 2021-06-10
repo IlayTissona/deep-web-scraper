@@ -29,6 +29,7 @@ app.get("/all-authors", (req, res) => {
 app.get("/author/:authorName", (req, res) => {
   const { authorName } = req.params;
   const onlyValidChars = new RegExp(/^[a-zA-Z0-9 .!?"-]+$/);
+
   const isSomeOneTryingToFuckWithMe = !onlyValidChars.test(searchValue);
   if (isSomeOneTryingToFuckWithMe)
     return res.json({ error: "sqlInjectionAttempt" });
