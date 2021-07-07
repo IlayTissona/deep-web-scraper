@@ -28,5 +28,7 @@
 7. Run ``` npm run setup ```
 
 
-8. In your brouser go to [http://localhost:8080/](http://localhost:8080/).
+
+In your browser, go to [http://localhost:8080/](http://localhost:8080/).
+Enjoy :)
 
